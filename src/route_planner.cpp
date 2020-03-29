@@ -21,7 +21,7 @@ RoutePlanner::RoutePlanner(RouteModel &model, float start_x, float start_y, floa
 // - Node objects have a distance method to determine the distance to another node.
 
 float RoutePlanner::CalculateHValue(RouteModel::Node const *node) {
-    float distance = (*node).distance(*end_node);
+    float distance = node->distance(*end_node);
 
 }
 
@@ -54,11 +54,25 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
 // - Remove that node from the open_list.
 // - Return the pointer.
 
+/**
+ * Compare the f-Value of two nodes
+ * 
+ * @param a Pointer to the first Node to compare
+ * @param b Pointer to the second Node to compare
+ * 
+ * @return True if the first f-value is greater than the second f-value 
+*/
+bool Compare(RouteModel::Node* a, RouteModel::Node* b) {
+    return (a->g_value + a->h_value) > (b->g_value + b->h_value);
+}
+/**
+* Find the next nearest node based on f-value
+* @return Pointer to the nearest node
+*/
+
 RouteModel::Node *RoutePlanner::NextNode() {
     // sort open_list according to f-value
-    std::sort(this->open_list.begin(), this->open_list.end(), [](RouteModel::Node* a, RouteModel::Node* b) {
-        return float(a->g_value + a->h_value) > float(b->g_value + b->h_value);
-    });
+    std::sort(this->open_list.begin(), this->open_list.end(), Compare);
 
     // create a pointer to the node with the lowest sum
     RouteModel::Node* lowest = this->open_list.back();
@@ -135,7 +149,7 @@ void RoutePlanner::AStarSearch() {
         
         // set the final path if the end node is found
         if (current_node == end_node) {
-            m_Model.path = ConstructFinalPath(current_node);
+            m_Model.path = ConstructFinalPath(end_node);
         }
         AddNeighbors(current_node);
     }

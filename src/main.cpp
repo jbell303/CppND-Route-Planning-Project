@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <io2d.h>
+#include <limits>
 #include "route_model.h"
 #include "render.h"
 #include "route_planner.h"
@@ -55,24 +56,44 @@ int main(int argc, const char **argv)
     // TODO 1: Declare floats `start_x`, `start_y`, `end_x`, and `end_y` and get
     // user input for these values using std::cin. Pass the user input to the
     // RoutePlanner object below in place of 10, 10, 90, 90.
+    
+    // Checking for valid input
     float start_x;
     float start_y;
     float end_x;
     float end_y;
     std::cout << "Please enter a value for start x: " << "\n";
     std::cin >> start_x;
+    while (!(std::cin) || start_x < 0 || start_x > 100) {
+        std::cout << "Invalid entry. Enter a start x from 0 to 100: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cin >> start_x;
+    }
     std::cout << "Please enter a value for start y: " << "\n";
     std::cin >> start_y;
+    while (!(std::cin) || start_y < 0 || start_y > 100) {
+        std::cout << "Invalid entry. Enter a start y from 0 to 100: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cin >> start_y;
+    }
     std::cout << "Please enter a value for end x: " << "\n";
     std::cin >> end_x;
+    while (!(std::cin) || end_x < 0 || end_x > 100) {
+        std::cout << "Invalid entry. Enter a end x from 0 to 100: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cin >> end_x;
+    }
     std::cout << "Please enter a value for end y: " << "\n";
     std::cin >> end_y;
-
-    // debug
-    // std::cout << "start x: " << start_x << "\n";
-    // std::cout << "start y: " << start_y << "\n";
-    // std::cout << "end x: " << end_x << "\n";
-    // std::cout << "end y: " << end_y << "\n";
+    while (!(std::cin) || end_y < 0 || end_y > 100) {
+        std::cout << "Invalid entry. Enter a end y from 0 to 100: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cin >> end_y;
+    }
 
     // Build Model.
     RouteModel model{osm_data};
